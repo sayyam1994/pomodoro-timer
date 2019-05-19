@@ -1,0 +1,151 @@
+<html>
+    <head>
+        <title>Pomodoro Timer</title>
+        <link href="style.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <div class="title">
+            Pomodoro Timer
+        </div>
+        <div class="header">
+            Start the Timer
+        </div>
+        <div class="timer">
+            <span class="mins">25</span>
+            :
+            <span class="secs">00</span>
+        </div>
+        <div class="button">
+            <button class="start">Start</button>
+            <button class="stop">Pause</button>
+            <button class="reset">Reset</button>
+        </div>
+        <script>
+
+            function play(){
+                clearInterval(countdown);
+
+                if (startCheck == true){
+                   start.textContent = "Resume";
+                   startCheck = false;
+                   header.textContent = "Time to Work!!";
+                }
+                start.disabled = true; 
+                countdown = setInterval(()=> {
+                    if (mins==0 && secs==0){
+                        statusCheck = false;
+                        secs = 0;
+                        mins = 5;
+                        header.textContent = "Breaktime!!";
+                        breakTime();
+                    }
+                    else {
+                        if (secs==0){
+                            secs = 60;
+                            mins--;
+                        } 
+                        else {
+                        secs--;
+                            if (secs<10){
+                                secsDisp.textContent = "0" + secs;
+                                timer.style.color ="red";         
+                            }
+                            else {
+                                secsDisp.textContent = secs;
+                                timer.style.color ="yellow";
+                            }       
+                        if (mins<10){
+                            minsDisp.textContent = "0" + mins;
+                        }
+                        else {
+                            minsDisp.textContent = mins;  
+                        }
+                        }
+                    }
+                },1000);
+            }
+
+            function breakTime(){
+                clearInterval(countdown);
+
+                countdown = setInterval(()=> {
+                    if (mins==0 && secs==0){
+                        secs = 0;
+                        mins = 25;
+                        statusCheck = true;
+                        header.textContent = "Time to Work!!";
+                        play();
+                    }
+                    else {
+                        if (secs==0){
+                            secs = 60;
+                            mins--;
+                        } 
+                        else {
+                        secs--;
+                            if (secs<10){
+                                secsDisp.textContent = "0" + secs; 
+                                timer.style.color ="red";        
+                            }
+                            else {
+                                secsDisp.textContent = secs;
+                                timer.style.color ="yellow";
+                            }       
+                        if (mins<10){
+                            minsDisp.textContent = "0" + mins;
+                        }
+                        else {
+                            minsDisp.textContent = mins;  
+                        }
+                        }
+                    }
+                },1000);
+            }
+
+
+            function resetTimer(){
+                clearInterval(countdown);
+                secsDisp.textContent = "00";
+                minsDisp.textContent = 25;
+                secs = 0;
+                mins = 25;
+                start.disabled = false;
+                startCheck = true;
+                start.textContent = "Start";
+                header.textContent = "Start the Timer";
+            }
+
+            function stopTimer(){
+                clearInterval(countdown);
+                start.disabled = false; 
+            }
+
+            var header = document.querySelector(".header");
+            var timer = document.querySelector(".timer");
+            var minsDisp = document.querySelector(".mins");
+            var secsDisp = document.querySelector(".secs");
+            var mins = document.querySelector(".mins").textContent;
+            var secs = document.querySelector(".secs").textContent;
+            var start = document.querySelector(".start");
+            var reset = document.querySelector(".reset");
+            var countdown = 0;
+            var stop = document.querySelector(".stop");
+            var startCheck = true; //check if timer is started or not
+            var statusCheck = true; //check if timer is in work mode or break mode
+            
+            start.addEventListener("click", ()=> {
+                if (statusCheck == true){
+                    play();
+                } 
+                else {
+                    breakTime();
+                }
+            });
+            reset.addEventListener("click", resetTimer);
+            stop.addEventListener("click", stopTimer);
+
+
+
+        </script>
+    </body>
+</html>
